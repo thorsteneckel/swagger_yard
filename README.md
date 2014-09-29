@@ -141,6 +141,16 @@ You should now be able to start your application and visit `http://local-dev.dom
 
 To see a specific controller visit `http://local-dev.domain:port/swagger/api/accounts/ownerships` as given in the `@resource_path` in the example above.
 
+## Uploading to a Swagger Service
+
+Add `load 'swagger_yard/tasks/swagger_yard.rake` to your Rakefile
+
+Run from your application:
+
+`APP_NAME=your_application_name SWAGGER_SERVICE_URL="http://swagger-service.your-domain.com/swagger/your_application_name" bundle exec rake swagger:deploy`
+
+**Note:** Does not currently support setting the proper `base_api_path` so that testing your application's API will work.
+
 ## Generators ##
 
 There are two generators that you can use, if you need to customize the UI/JS (optional)
