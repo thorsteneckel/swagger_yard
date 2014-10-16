@@ -2,8 +2,8 @@ require 'swagger_yard'
 require 'net/http'
 
 namespace :swagger do
-  desc "Generate swagger json"
-  task :generate => :environment do |t, args|
+  desc "Generate and upload swagger json"
+  task :deploy => :environment do |t, args|
     resource_listing = SwaggerYard::ResourceListing.new(
       Rails.root+'app/controllers/**/*.rb',
       Rails.root+'app/models/**/*.rb'
@@ -20,17 +20,11 @@ namespace :swagger do
       end
     ]).to_json
 
-    File.open(Rails.root+'tmp/swagger.json', 'w') {|f| f.write(json)}
-  end
-
-  desc "Upload swagger json to swagger service"
-  task :upload, [:swagger_service_url] do |t, args|
+    # File.open('/tmp/swagger.json', 'w') {|f| f.write(json)}
+  
     uri = URI(args[:swagger_service_url] || ENV["SWAGGER_SERVICE_URL"])
 
     http = Net::HTTP.new(uri.hostname)
-    http.request_post(uri.path, File.read('tmp/swagger.json'))
+    http.request_post(uri.path, json)
   end
-
-  desc "Generate and upload swagger json to the swagger service"
-  task :deploy => [:generate, :upload]
 end
