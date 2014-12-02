@@ -77,8 +77,34 @@ module SwaggerYard
     # Example: [Array]     status(required, body)  Filter by status. (e.g. status[]=1&status[]=2&status[]=3)
     # Example: [Integer]   media[media_type_id]                          ID of the desired media type.
     def add_parameter(tag)
-      @parameters << Parameter.from_yard_tag(tag, self)
+      parameter = Parameter.from_yard_tag(tag, self)
+
+      add_parameter = true
+      # Check for existing parameters to overwrite?
+      if SwaggerYard.config.overwrite_path_parameter &&
+          @parameters.any?
+
+        @parameters.map! { |p|
+
+          # Match only path parameter with same name
+          if p.param_type == 'path' &&
+             p.name       == parameter.name
+
+            add_parameter        = false
+            parameter.param_type = 'path'
+
+            parameter
+          else
+            p
+          end
+        }
+      end
+
+      if add_parameter
+        @parameters << parameter
+      end
     end
+
 
     ##
     # Example: [String]    sort_order  Orders ownerships by fields. (e.g. sort_order=created_at)

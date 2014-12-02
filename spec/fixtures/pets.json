@@ -55,17 +55,9 @@
             {
               "paramType":"path",
               "name":"id",
-              "description":"Scope response to id",
+              "description":"The ID for the Pet",
               "type":"string",
               "required":true,
-              "allowMultiple":false
-            },
-            {
-              "paramType":"query",
-              "name":"id",
-              "description":"The ID for the Pet",
-              "type":"integer",
-              "required":false,
               "allowMultiple":false
             },
             {

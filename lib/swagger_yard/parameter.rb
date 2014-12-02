@@ -1,7 +1,7 @@
 module SwaggerYard
   class Parameter
-    attr_accessor :name, :description
-    attr_reader :param_type, :required, :allow_multiple, :allowable_values
+    attr_accessor :name, :description, :param_type
+    attr_reader :required, :allow_multiple, :allowable_values
 
     def self.from_yard_tag(tag, operation)
       description = tag.text
@@ -61,7 +61,7 @@ module SwaggerYard
         "description"     => description,
         "required"        => required,
         "allowMultiple"   => allow_multiple.present?,
-        "allowableValues" => allowable_values_hash 
+        "allowableValues" => allowable_values_hash
       }.merge(@type.to_h).reject {|k,v| v.nil?}
     end
   end
