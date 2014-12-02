@@ -78,11 +78,11 @@ class Accounts::OwnershipsController < ActionController::Base
 
   ##
   # Returns an ownership for an account by id
-  # 
+  #
   # @path [GET] /accounts/ownerships/{id}.{format_type}
   # @response_type [Ownership]
-  # @error_message [EmptyOwnership] 404 Ownership not found
-  # @error_message 400 Invalid ID supplied
+  # @response_message [EmptyOwnership] 404 Ownership not found
+  # @response_message 400 Invalid ID supplied
   #
   def show
     ...

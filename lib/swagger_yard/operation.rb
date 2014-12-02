@@ -1,7 +1,7 @@
 module SwaggerYard
   class Operation
     attr_accessor :summary, :notes
-    attr_reader :path, :http_method, :error_messages, :response_type
+    attr_reader :path, :http_method, :response_message, :response_type
     attr_reader :parameters, :model_names
 
     PARAMETER_LIST_REGEX = /\A\[(\w*)\]\s*(\w*)(\(required\))?\s*(.*)\n([.\s\S]*)\Z/
@@ -19,8 +19,8 @@ module SwaggerYard
             operation.add_parameter_list(tag)
           when "response_type"
             operation.add_response_type(Type.from_type_list(tag.types))
-          when "error_message"
-            operation.add_error_message(tag)
+          when "response_message"
+            operation.add_response_message(tag)
           when "summary"
             operation.summary = tag.text
           when "notes"
@@ -37,7 +37,7 @@ module SwaggerYard
       @api = api
       @parameters = []
       @model_names = []
-      @error_messages = []
+      @response_message = []
     end
 
     def nickname
@@ -53,7 +53,7 @@ module SwaggerYard
         "parameters"        => parameters.map(&:to_h),
         "summary"           => summary || @api.description,
         "notes"             => notes,
-        "responseMessages"  => error_messages
+        "responseMessages"  => response_message
       }.tap do |h|
         h.merge!(response_type.to_h) if response_type
       end
@@ -82,10 +82,10 @@ module SwaggerYard
 
     ##
     # Example: [String]    sort_order  Orders ownerships by fields. (e.g. sort_order=created_at)
-    #          [List]      id              
-    #          [List]      begin_at        
-    #          [List]      end_at          
-    #          [List]      created_at      
+    #          [List]      id
+    #          [List]      begin_at
+    #          [List]      end_at
+    #          [List]      created_at
     def add_parameter_list(tag)
       # TODO: switch to using Parameter.from_yard_tag
       data_type, name, required, description, list_string = parse_parameter_list(tag)
@@ -104,8 +104,8 @@ module SwaggerYard
       @response_type = type
     end
 
-    def add_error_message(tag)
-      @error_messages << {
+    def add_response_message(tag)
+      @response_message << {
         "code" => Integer(tag.name),
         "message" => tag.text,
         "responseModel" => Array.wrap(tag.types).first

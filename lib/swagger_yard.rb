@@ -60,7 +60,7 @@ module SwaggerYard
       ::YARD::Tags::Library.define_tag("Status code", :status_code)
       ::YARD::Tags::Library.define_tag("Implementation notes", :notes)
       ::YARD::Tags::Library.define_tag("Response type", :response_type, :with_types)
-      ::YARD::Tags::Library.define_tag("Error response message", :error_message, :with_types_and_name)
+      ::YARD::Tags::Library.define_tag("Response message", :response_message, :with_types_and_name)
       ::YARD::Tags::Library.define_tag("Api Summary", :summary)
       ::YARD::Tags::Library.define_tag("Model resource", :model)
       ::YARD::Tags::Library.define_tag("Model property", :property, :with_types_name_and_default)
