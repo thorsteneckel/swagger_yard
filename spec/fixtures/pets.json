@@ -60,6 +60,14 @@
                 "format": "date"
             }, {
                 "paramType": "path",
+                "name": "format_type",
+                "description": "Response format either JSON or XML",
+                "required": true,
+                "allowMultiple": false,
+                "enum": ["json", "xml"],
+                "type": "string"
+            }, {
+                "paramType": "path",
                 "name": "id",
                 "description": "The ID for the Pet",
                 "required": false,
@@ -98,14 +106,6 @@
                 "allowMultiple": false,
                 "type": "number",
                 "format": "double"
-            }, {
-                "paramType": "path",
-                "name": "format_type",
-                "description": "Response format either JSON or XML",
-                "required": true,
-                "allowMultiple": false,
-                "enum": ["json", "xml"],
-                "type": "string"
             }],
             "summary": "return a Pet",
             "notes": null,
@@ -134,14 +134,6 @@
                 "required": true,
                 "allowMultiple": false,
                 "$ref": "Pet"
-            }, {
-                "paramType": "path",
-                "name": "format_type",
-                "description": "Response format either JSON or XML",
-                "required": true,
-                "allowMultiple": false,
-                "enum": ["json", "xml"],
-                "type": "string"
             }],
             "summary": "create a Pet (overwritten)",
             "notes": "First line of the note.\u003cbr\u003eSecond line of the note.",

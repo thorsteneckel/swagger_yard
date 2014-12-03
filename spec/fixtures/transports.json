@@ -12,20 +12,20 @@
             "type": "array",
             "produces": ["application/json", "application/xml"],
             "parameters": [{
-                "paramType": "query",
-                "name": "sort_order",
-                "description": "Orders response by fields. (e.g. sort_order=created_at).",
-                "required": false,
-                "allowMultiple": false,
-                "enum": ["id", "begin_at", "end_at", "created_at"],
-                "type": "string"
-            }, {
                 "paramType": "path",
                 "name": "format_type",
                 "description": "Response format either JSON or XML",
                 "required": true,
                 "allowMultiple": false,
                 "enum": ["json", "xml"],
+                "type": "string"
+            }, {
+                "paramType": "query",
+                "name": "sort_order",
+                "description": "Orders response by fields. (e.g. sort_order=created_at).",
+                "required": false,
+                "allowMultiple": false,
+                "enum": ["id", "begin_at", "end_at", "created_at"],
                 "type": "string"
             }],
             "summary": "return a list of Transports",

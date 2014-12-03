@@ -29,7 +29,6 @@ module SwaggerYard
         end
 
         operation.sort_parameters
-        operation.append_format_parameter
       end
     end
 
@@ -67,7 +66,12 @@ module SwaggerYard
       @http_method = tag.types.first
 
       parse_path_params(tag.text).each do |name|
-        @parameters << Parameter.from_path_param(name)
+
+        if name == 'format_type'
+          append_format_parameter
+        else
+          @parameters << Parameter.from_path_param(name)
+        end
       end
     end
 
@@ -152,7 +156,7 @@ module SwaggerYard
 
     private
     def parse_path_params(path)
-      path.scan(/\{([^\}]+)\}/).flatten.reject { |value| value == "format_type" }
+      path.scan(/\{([^\}]+)\}/).flatten
     end
 
     def parse_parameter_list(tag)
