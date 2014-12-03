@@ -16,6 +16,12 @@ class PetsController < ApplicationController
   # return a Pet
   # @path [GET] /pets/{id}.{format_type}
   # @parameter id [integer] The ID for the Pet
+  # @parameter price [float] The price of the Pet
+  # @parameter weight [double] Just a test double parameter
+  # @parameter unixtimestamp [long] Just a test long parameter
+  # @parameter size [byte] Just a test byte parameter
+  # @parameter birthday [date] The birthday of the pet
+  # @parameter added [datetime] The date and time the Pet was added to the store
   # @response_type [Pet]
   # @response_message [EmptyPet] 404 Pet not found
   # @response_message 400 Invalid ID supplied
@@ -24,6 +30,9 @@ class PetsController < ApplicationController
 
   # create a Pet
   # @path [POST] /pets
+  # @summary create a Pet (overwritten)
+  # @notes First line of the note.
+  #        Second line of the note.
   # @parameter pet(required,body) [Pet] The pet object
   def create
   end

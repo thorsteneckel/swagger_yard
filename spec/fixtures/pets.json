@@ -1,161 +1,210 @@
 {
-  "apiVersion":"1.0",
-  "swaggerVersion":"1.2",
-  "basePath":"http://localhost:3000/api",
-  "resourcePath":"/pets",
-  "apis":[
-    {
-      "path":"/pets.{format_type}",
-      "description":"return a list of Pets",
-      "operations":[
-        {
-          "httpMethod":"GET",
-          "nickname":"pets-format-type-get",
-          "type":"array",
-          "items": {"$ref":"Pet"},
-          "produces":["application/json", "application/xml"],
-          "parameters":[
-            {
-              "paramType":"query",
-              "name":"client_name",
-              "description":"The name of the client using the API",
-              "type":"string",
-              "required":true,
-              "allowMultiple":false
-            },
-            {
-              "paramType":"path",
-              "name":"format_type",
-              "description":"Response format either JSON or XML",
-              "type":"string",
-              "required":true,
-              "allowMultiple":false,
-              "allowableValues":{
-                "valueType":"LIST",
-                "values":["json", "xml"]
-              }
+    "apiVersion": "1.0",
+    "swaggerVersion": "1.2",
+    "basePath": "http://localhost:3000/api",
+    "resourcePath": "/pets",
+    "apis": [{
+        "path": "/pets.{format_type}",
+        "description": "return a list of Pets",
+        "operations": [{
+            "httpMethod": "GET",
+            "nickname": "pets-format-type-get",
+            "type": "array",
+            "produces": ["application/json", "application/xml"],
+            "parameters": [{
+                "paramType": "query",
+                "name": "client_name",
+                "description": "The name of the client using the API",
+                "required": true,
+                "allowMultiple": false,
+                "type": "string"
+            }, {
+                "paramType": "path",
+                "name": "format_type",
+                "description": "Response format either JSON or XML",
+                "required": true,
+                "allowMultiple": false,
+                "allowableValues": {
+                    "valueType": "LIST",
+                    "values": ["json", "xml"]
+                },
+                "type": "string"
+            }],
+            "summary": "return a list of Pets",
+            "notes": null,
+            "responseMessages": [],
+            "items": {
+                "$ref": "Pet"
             }
-          ],
-          "summary":"return a list of Pets",
-          "notes":null,
-          "responseMessages":[]
-        }
-      ]
-    },
-    {
-      "path":"/pets/{id}.{format_type}",
-      "description":"return a Pet",
-      "operations":[
-        {
-          "httpMethod":"GET",
-          "nickname":"pets-id-format-type-get",
-          "type":"Pet",
-          "produces":["application/json", "application/xml"],
-          "parameters":[
-            {
-              "paramType":"path",
-              "name":"id",
-              "description":"The ID for the Pet",
-              "type":"string",
-              "required":true,
-              "allowMultiple":false
+        }]
+    }, {
+        "path": "/pets/{id}.{format_type}",
+        "description": "return a Pet",
+        "operations": [{
+            "httpMethod": "GET",
+            "nickname": "pets-id-format-type-get",
+            "type": "void",
+            "produces": ["application/json", "application/xml"],
+            "parameters": [{
+                "paramType": "query",
+                "name": "added",
+                "description": "The date and time the Pet was added to the store",
+                "required": false,
+                "allowMultiple": false,
+                "type": "string",
+                "format": "date-time"
+            }, {
+                "paramType": "query",
+                "name": "birthday",
+                "description": "The birthday of the pet",
+                "required": false,
+                "allowMultiple": false,
+                "type": "string",
+                "format": "date"
+            }, {
+                "paramType": "path",
+                "name": "id",
+                "description": "The ID for the Pet",
+                "required": false,
+                "allowMultiple": false,
+                "type": "integer",
+                "format": "int32"
+            }, {
+                "paramType": "query",
+                "name": "price",
+                "description": "The price of the Pet",
+                "required": false,
+                "allowMultiple": false,
+                "type": "number",
+                "format": "float"
+            }, {
+                "paramType": "query",
+                "name": "size",
+                "description": "Just a test byte parameter",
+                "required": false,
+                "allowMultiple": false,
+                "type": "string",
+                "format": "byte"
+            }, {
+                "paramType": "query",
+                "name": "unixtimestamp",
+                "description": "Just a test long parameter",
+                "required": false,
+                "allowMultiple": false,
+                "type": "integer",
+                "format": "int64"
+            }, {
+                "paramType": "query",
+                "name": "weight",
+                "description": "Just a test double parameter",
+                "required": false,
+                "allowMultiple": false,
+                "type": "number",
+                "format": "double"
+            }, {
+                "paramType": "path",
+                "name": "format_type",
+                "description": "Response format either JSON or XML",
+                "required": true,
+                "allowMultiple": false,
+                "allowableValues": {
+                    "valueType": "LIST",
+                    "values": ["json", "xml"]
+                },
+                "type": "string"
+            }],
+            "summary": "return a Pet",
+            "notes": null,
+            "responseMessages": [{
+                "code": 404,
+                "message": "Pet not found",
+                "responseModel": "EmptyPet"
+            }, {
+                "code": 400,
+                "message": "Invalid ID supplied"
+            }],
+            "$ref": "Pet"
+        }]
+    }, {
+        "path": "/pets",
+        "description": "create a Pet",
+        "operations": [{
+            "httpMethod": "POST",
+            "nickname": "petspost",
+            "type": "void",
+            "produces": ["application/json", "application/xml"],
+            "parameters": [{
+                "paramType": "body",
+                "name": "pet",
+                "description": "The pet object",
+                "required": true,
+                "allowMultiple": false,
+                "$ref": "Pet"
+            }, {
+                "paramType": "path",
+                "name": "format_type",
+                "description": "Response format either JSON or XML",
+                "required": true,
+                "allowMultiple": false,
+                "allowableValues": {
+                    "valueType": "LIST",
+                    "values": ["json", "xml"]
+                },
+                "type": "string"
+            }],
+            "summary": "create a Pet (overwritten)",
+            "notes": "First line of the note.\u003cbr\u003eSecond line of the note.",
+            "responseMessages": []
+        }]
+    }],
+    "models": {
+        "Pet": {
+            "id": "Pet",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "the identifier for the pet"
+                },
+                "names": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "the names for the pet"
+                },
+                "age": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "the age of the pet"
+                },
+                "relatives": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "AnimalThing"
+                    },
+                    "description": "other Pets in its family"
+                }
             },
-            {
-              "paramType":"path",
-              "name":"format_type",
-              "description":"Response format either JSON or XML",
-              "type":"string",
-              "required":true,
-              "allowMultiple":false,
-              "allowableValues":{
-                "valueType":"LIST",
-                "values":["json", "xml"]
-              }
-            }
-          ],
-          "summary":"return a Pet",
-          "notes":null,
-          "responseMessages":[
-            {
-              "code": 404,
-              "message": "Pet not found",
-              "responseModel": "EmptyPet"
-            },
-            {
-              "code": 400,
-              "message": "Invalid ID supplied"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "path":"/pets",
-      "description":"create a Pet",
-      "operations":[
-        {
-          "httpMethod":"POST",
-          "nickname":"petspost",
-          "type":"void",
-          "produces":["application/json", "application/xml"],
-          "parameters":[
-            {
-              "paramType":"body",
-              "name":"pet",
-              "description":"The pet object",
-              "type":"Pet",
-              "required":true,
-              "allowMultiple":false
-            },
-            {
-              "paramType":"path",
-              "name":"format_type",
-              "description":"Response format either JSON or XML",
-              "type":"string",
-              "required":true,
-              "allowMultiple":false,
-              "allowableValues":{
-                "valueType":"LIST",
-                "values":["json", "xml"]
-              }
-            }
-          ],
-          "summary":"create a Pet",
-          "notes":null,
-          "responseMessages":[]
-        }
-      ]
-    }
-  ],
-  "models":{
-    "AnimalThing":{
-      "id":"AnimalThing",
-      "properties": {
-        "id":{"type":"integer", "description":"the identifier for the animal thing"},
-        "type":{"type":"string", "description":"the type of animal"}
-      },
-      "required":["id"]
-    },
-    "Pet":{
-      "id":"Pet",
-      "properties":{
-        "id":{"type":"integer","description":"the identifier for the pet"},
-        "names":{
-          "type":"array",
-          "items": {"type":"string"},
-          "description":"the names for the pet"
+            "required": ["id", "relatives"]
         },
-        "age":{"type":"integer","description":"the age of the pet"},
-        "relatives": {
-          "type":"array",
-          "items":{"$ref":"AnimalThing"},
-          "description":"other Pets in its family"
+        "AnimalThing": {
+            "id": "AnimalThing",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "the identifier for the animal thing"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "the type of animal"
+                }
+            },
+            "required": ["id"]
         }
-      },
-      "required":["id","relatives"]
+    },
+    "authorizations": {
+        "header_x_application_api_key": []
     }
-  },
-  "authorizations":{
-    "header_x_application_api_key":[]
-  }
 }
