@@ -24,10 +24,7 @@
                 "description": "Response format either JSON or XML",
                 "required": true,
                 "allowMultiple": false,
-                "allowableValues": {
-                    "valueType": "LIST",
-                    "values": ["json", "xml"]
-                },
+                "enum": ["json", "xml"],
                 "type": "string"
             }],
             "summary": "return a list of Pets",
@@ -107,10 +104,7 @@
                 "description": "Response format either JSON or XML",
                 "required": true,
                 "allowMultiple": false,
-                "allowableValues": {
-                    "valueType": "LIST",
-                    "values": ["json", "xml"]
-                },
+                "enum": ["json", "xml"],
                 "type": "string"
             }],
             "summary": "return a Pet",
@@ -146,10 +140,7 @@
                 "description": "Response format either JSON or XML",
                 "required": true,
                 "allowMultiple": false,
-                "allowableValues": {
-                    "valueType": "LIST",
-                    "values": ["json", "xml"]
-                },
+                "enum": ["json", "xml"],
                 "type": "string"
             }],
             "summary": "create a Pet (overwritten)",

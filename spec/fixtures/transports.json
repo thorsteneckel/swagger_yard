@@ -17,10 +17,7 @@
                 "description": "Orders response by fields. (e.g. sort_order=created_at).",
                 "required": false,
                 "allowMultiple": false,
-                "allowableValues": {
-                    "valueType": "LIST",
-                    "values": ["id", "begin_at", "end_at", "created_at"]
-                },
+                "enum": ["id", "begin_at", "end_at", "created_at"],
                 "type": "string"
             }, {
                 "paramType": "path",
@@ -28,10 +25,7 @@
                 "description": "Response format either JSON or XML",
                 "required": true,
                 "allowMultiple": false,
-                "allowableValues": {
-                    "valueType": "LIST",
-                    "values": ["json", "xml"]
-                },
+                "enum": ["json", "xml"],
                 "type": "string"
             }],
             "summary": "return a list of Transports",
