@@ -48,20 +48,17 @@ module SwaggerYard
     def allowable_values_hash
       return nil if allowable_values.empty?
 
-      {
-        "valueType" => "LIST",
-        "values" => allowable_values
-      }
+      allowable_values
     end
 
     def to_h
       {
-        "paramType"       => param_type,
-        "name"            => name,
-        "description"     => description,
-        "required"        => required,
-        "allowMultiple"   => allow_multiple.present?,
-        "allowableValues" => allowable_values_hash
+        "paramType"     => param_type,
+        "name"          => name,
+        "description"   => description,
+        "required"      => required,
+        "allowMultiple" => allow_multiple.present?,
+        "enum"          => allowable_values_hash,
       }.merge(@type.to_h).reject {|k,v| v.nil?}
     end
   end
