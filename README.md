@@ -21,6 +21,7 @@ Install the gem with Bunder:
 
 ### Place your configuration in a your rails initializers ###
 
+```ruby
     # config/initializers/swagger_yard.rb
     SwaggerYard.configure do |config|
       config.swagger_version = "1.2"
@@ -59,6 +60,7 @@ Install the gem with Bunder:
       # where your actual api is hosted from
       config.api_base_path = "http://localhost:3000/api"
     end
+```
 
 ### Mount your engine ###
 
