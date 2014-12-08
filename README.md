@@ -35,6 +35,15 @@ Install the gem with Bunder:
       # b) replace the default path parameter definition => true
       config.overwrite_path_parameter = false
 
+      # This configurations define what MIME/content type the API can handle.
+      # If no @receive_content_type or @response_content_type tag is set in
+      # the single operations those values will be used.
+      # The possible MIME/content type(s) will be automatically synced into the
+      # format_type parameter, if present. Only values matching the MIME type
+      # pattern will be used. E.g. "application/json" => "json", "Whatsoever" => not used
+      config.receive_content_types    = ["application/json", "application/xml"]
+      config.response_content_types   = ["application/json", "application/xml"]
+
       # where your swagger spec json will show up
       config.swagger_spec_base_path = "http://localhost:3000/swagger/api"
       # where your actual api is hosted from
@@ -89,6 +98,8 @@ class Accounts::OwnershipsController < ActionController::Base
   #
   # @path [GET] /accounts/ownerships/{id}.{format_type}
   # @parameter id [integer] The ID for the Pet
+  # @receive_content_type application/json
+  # @response_content_type application/json
   # @response_type [Ownership]
   # @response_message [EmptyOwnership] 404 Ownership not found
   # @response_message 400 Invalid ID supplied
