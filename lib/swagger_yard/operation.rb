@@ -87,14 +87,14 @@ module SwaggerYard
 
         h.merge!(response_type.to_h) if response_type
 
-        h["consumes"] = SwaggerYard.config.receive_content_types
+        h["consumes"] = SwaggerYard.config.receive_content_types.sort
         if not receive_content_types.empty?
-          h["consumes"] = receive_content_types.to_a
+          h["consumes"] = receive_content_types.to_a.sort
         end
 
-        h["produces"] = SwaggerYard.config.response_content_types
+        h["produces"] = SwaggerYard.config.response_content_types.sort
         if not response_content_types.empty?
-          h["produces"] = response_content_types.to_a
+          h["produces"] = response_content_types.to_a.sort
         end
       }.reject {|_,v| v.nil?}
     end

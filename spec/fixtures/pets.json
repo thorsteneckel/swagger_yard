@@ -117,7 +117,7 @@
             }],
             "$ref": "Pet",
             "consumes": ["application/json", "application/xml"],
-            "produces": ["application/xml", "application/json"]
+            "produces": ["application/json", "application/xml"]
         }]
     }, {
         "path": "/pets",
