@@ -41,8 +41,18 @@ Install the gem with Bunder:
       # The possible MIME/content type(s) will be automatically synced into the
       # format_type parameter, if present. Only values matching the MIME type
       # pattern will be used. E.g. "application/json" => "json", "Whatsoever" => not used
-      config.receive_content_types    = ["application/json", "application/xml"]
-      config.response_content_types   = ["application/json", "application/xml"]
+      config.receive_content_types  = ["application/json", "application/xml"]
+      config.response_content_types = ["application/json", "application/xml"]
+
+      # This configurations are filling the matching attributes in the info object/structure.
+      # See the Swagger 1.2 specs for more details: https://github.com/swagger-api/swagger-spec/blob/master/versions/1.2.md#513-info-object
+      # The following values are the defaults, nil will get skipped
+      config.application_name        = "Dummy Test API"
+      config.application_description = "An API documented with the help of the swagger_yard gem"
+      config.contact                 = nil
+      config.terms_of_service_url    = nil
+      config.license                 = nil
+      config.license_url             = nil
 
       # where your swagger spec json will show up
       config.swagger_spec_base_path = "http://localhost:3000/swagger/api"
