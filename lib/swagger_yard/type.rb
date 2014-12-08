@@ -13,7 +13,7 @@ module SwaggerYard
 
     # TODO: have this look at resource listing?
     def ref?
-      /[[:upper:]]/.match(name)
+      !['integer', 'long', 'float', 'double', 'string', 'byte', 'boolean', 'date', 'datetime'].include? name.downcase
     end
 
     def model_name
@@ -23,12 +23,47 @@ module SwaggerYard
     alias :array? :array
 
     def to_h
-      type_tag = ref? ? "$ref" : "type"
+      tag_type = ref? ? "$ref" : "type"
+      tag_name = ref? ? name   : name.downcase
+
+      hash = {}
+
       if array?
-        {"type"=>"array", "items"=> { type_tag => name }}
+        hash = {
+          "type"  => "array",
+          "items" => {
+            tag_type => tag_name
+          }
+        }
       else
-        {"type"=>name}
+        if tag_name === 'integer'
+          hash["type"]   = 'integer'
+          hash["format"] = 'int32'
+        elsif tag_name === 'long'
+          hash["type"]   = 'integer'
+          hash["format"] = 'int64'
+        elsif tag_name === 'float'
+          hash["type"]   = 'number'
+          hash["format"] = 'float'
+        elsif tag_name === 'double'
+          hash["type"]   = 'number'
+          hash["format"] = 'double'
+        elsif tag_name === 'byte'
+          hash["type"]   = 'string'
+          hash["format"] = 'byte'
+        elsif tag_name === 'date'
+          hash["type"]   = 'string'
+          hash["format"] = 'date'
+        elsif tag_name === 'datetime'
+          hash["type"]   = 'string'
+          hash["format"] = 'date-time'
+        # string and boolean and refs
+        else
+          hash[tag_type] = tag_name
+        end
       end
+
+      hash
     end
   end
 end

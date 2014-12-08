@@ -1,7 +1,13 @@
 module SwaggerYard
+
   class Parameter
-    attr_accessor :name, :description
-    attr_reader :param_type, :required, :allow_multiple, :allowable_values
+
+    attr_accessor :name,
+                  :description,
+                  :param_type,
+                  :allowable_values
+    attr_reader   :required,
+                  :allow_multiple
 
     def self.from_yard_tag(tag, operation)
       description = tag.text
@@ -35,33 +41,30 @@ module SwaggerYard
     def initialize(name, type, description, options={})
       @name, @type, @description = name, type, description
 
-      @required = options[:required] || false
-      @param_type = options[:param_type] || 'query'
-      @allow_multiple = options[:allow_multiple] || false
-      @allowable_values = options[:allowable_values] || []
+      @required         = options[:required]                 || false
+      @param_type       = options[:param_type]               || 'query'
+      @allow_multiple   = options[:allow_multiple]           || false
+      @allowable_values = Set.new options[:allowable_values] || []
     end
 
     def type
       @type.name
     end
 
-    def allowable_values_hash
+    def allowable_values_array
       return nil if allowable_values.empty?
 
-      {
-        "valueType" => "LIST",
-        "values" => allowable_values
-      }
+      allowable_values.to_a.sort!
     end
 
     def to_h
       {
-        "paramType"       => param_type,
-        "name"            => name,
-        "description"     => description,
-        "required"        => required,
-        "allowMultiple"   => allow_multiple.present?,
-        "allowableValues" => allowable_values_hash 
+        "paramType"     => param_type,
+        "name"          => name,
+        "description"   => description,
+        "required"      => required,
+        "allowMultiple" => allow_multiple.present?,
+        "enum"          => allowable_values_array,
       }.merge(@type.to_h).reject {|k,v| v.nil?}
     end
   end

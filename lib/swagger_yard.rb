@@ -19,11 +19,12 @@ module SwaggerYard
     # Configuration for Swagger Yard, use like:
     #
     #   SwaggerYard.configure do |config|
-    #     config.swagger_version = "1.1"
-    #     config.api_version = "0.1"
-    #     config.doc_base_path = "http://swagger.example.com/doc"
-    #     config.api_base_path = "http://swagger.example.com/api"
-    #     config.reload = true # Rails.env.development?
+    #     config.swagger_version          = "1.1"
+    #     config.api_version              = "0.1"
+    #     config.doc_base_path            = "http://swagger.example.com/doc"
+    #     config.api_base_path            = "http://swagger.example.com/api"
+    #     config.reload                   = true # Rails.env.development?
+    #     config.overwrite_path_parameter = false
     #   end
     def configure
       yield config
@@ -35,10 +36,10 @@ module SwaggerYard
 
     #
     # Use YARD to parse object tags from a file
-    # 
+    #
     # @param file_path [string] The complete path to file
     # @return [YARD] objects representing class/methods and tags from the file
-    # 
+    #
     def yard_objects_from_file(file_path)
       ::YARD::Registry.clear
       ::YARD.parse(file_path)
@@ -59,8 +60,10 @@ module SwaggerYard
       ::YARD::Tags::Library.define_tag("Parameter list", :parameter_list)
       ::YARD::Tags::Library.define_tag("Status code", :status_code)
       ::YARD::Tags::Library.define_tag("Implementation notes", :notes)
+      ::YARD::Tags::Library.define_tag("Receive content type", :receive_content_type)
+      ::YARD::Tags::Library.define_tag("Response content type", :response_content_type)
       ::YARD::Tags::Library.define_tag("Response type", :response_type, :with_types)
-      ::YARD::Tags::Library.define_tag("Error response message", :error_message, :with_types_and_name)
+      ::YARD::Tags::Library.define_tag("Response message", :response_message, :with_types_and_name)
       ::YARD::Tags::Library.define_tag("Api Summary", :summary)
       ::YARD::Tags::Library.define_tag("Model resource", :model)
       ::YARD::Tags::Library.define_tag("Model property", :property, :with_types_name_and_default)

@@ -4,11 +4,11 @@ module SwaggerYard
     attr_accessor :authorizations
 
     def initialize(controller_path, model_path)
-      @model_path = model_path
-      @controller_path = controller_path
 
+      @model_path            = model_path
+      @controller_path       = controller_path
       @resource_to_file_path = {}
-      @authorizations = []
+      @authorizations        = []
     end
 
     def models
@@ -24,12 +24,23 @@ module SwaggerYard
     end
 
     def to_h
+
+      info = {
+          "title"             => SwaggerYard.config.application_name,
+          "description"       => SwaggerYard.config.application_description,
+          "termsOfServiceUrl" => SwaggerYard.config.terms_of_service_url,
+          "contact"           => SwaggerYard.config.contact,
+          "license"           => SwaggerYard.config.license,
+          "licenseUrl"        => SwaggerYard.config.license_url
+        }.reject {|_,v| v.nil?}
+
       {
-        "apiVersion"      => SwaggerYard.config.api_version,
-        "swaggerVersion"  => SwaggerYard.config.swagger_version,
-        "basePath"        => SwaggerYard.config.swagger_spec_base_path,
-        "apis"            => list_api_declarations,
-        "authorizations"  => authorizations_hash
+        "apiVersion"     => SwaggerYard.config.api_version,
+        "swaggerVersion" => SwaggerYard.config.swagger_version,
+        "basePath"       => SwaggerYard.config.swagger_spec_base_path,
+        "apis"           => list_api_declarations,
+        "authorizations" => authorizations_hash,
+        "info"           => info
       }
     end
 

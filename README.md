@@ -21,17 +21,46 @@ Install the gem with Bunder:
 
 ### Place your configuration in a your rails initializers ###
 
+```ruby
     # config/initializers/swagger_yard.rb
     SwaggerYard.configure do |config|
       config.swagger_version = "1.2"
-      config.api_version = "1.0"
-      config.reload = Rails.env.development?
+      config.api_version     = "1.0"
+      config.reload          = Rails.env.development?
+
+      # By default swagger_yard adds default parameter definitions for the
+      # parameters used in the path.
+      # This configuration defines if a same named parameter thats
+      # defined via a tag should
+      # a) be added just as other parameters             => false (default)
+      # b) replace the default path parameter definition => true
+      config.overwrite_path_parameter = false
+
+      # This configurations define what MIME/content type the API can handle.
+      # If no @receive_content_type or @response_content_type tag is set in
+      # the single operations those values will be used.
+      # The possible MIME/content type(s) will be automatically synced into the
+      # format_type parameter, if present. Only values matching the MIME type
+      # pattern will be used. E.g. "application/json" => "json", "Whatsoever" => not used
+      config.receive_content_types  = ["application/json", "application/xml"]
+      config.response_content_types = ["application/json", "application/xml"]
+
+      # This configurations are filling the matching attributes in the info object/structure.
+      # See the Swagger 1.2 specs for more details: https://github.com/swagger-api/swagger-spec/blob/master/versions/1.2.md#513-info-object
+      # The following values are the defaults, nil will get skipped
+      config.application_name        = "Dummy Test API"
+      config.application_description = "An API documented with the help of the swagger_yard gem"
+      config.contact                 = nil
+      config.terms_of_service_url    = nil
+      config.license                 = nil
+      config.license_url             = nil
 
       # where your swagger spec json will show up
       config.swagger_spec_base_path = "http://localhost:3000/swagger/api"
       # where your actual api is hosted from
       config.api_base_path = "http://localhost:3000/api"
     end
+```
 
 ### Mount your engine ###
 
@@ -78,11 +107,14 @@ class Accounts::OwnershipsController < ActionController::Base
 
   ##
   # Returns an ownership for an account by id
-  # 
+  #
   # @path [GET] /accounts/ownerships/{id}.{format_type}
+  # @parameter id [integer] The ID for the Pet
+  # @receive_content_type application/json
+  # @response_content_type application/json
   # @response_type [Ownership]
-  # @error_message [EmptyOwnership] 404 Ownership not found
-  # @error_message 400 Invalid ID supplied
+  # @response_message [EmptyOwnership] 404 Ownership not found
+  # @response_message 400 Invalid ID supplied
   #
   def show
     ...
