@@ -60,6 +60,8 @@ module SwaggerYard
       ::YARD::Tags::Library.define_tag("Parameter list", :parameter_list)
       ::YARD::Tags::Library.define_tag("Status code", :status_code)
       ::YARD::Tags::Library.define_tag("Implementation notes", :notes)
+      ::YARD::Tags::Library.define_tag("Receive content type", :receive_content_type)
+      ::YARD::Tags::Library.define_tag("Response content type", :response_content_type)
       ::YARD::Tags::Library.define_tag("Response type", :response_type, :with_types)
       ::YARD::Tags::Library.define_tag("Response message", :response_message, :with_types_and_name)
       ::YARD::Tags::Library.define_tag("Api Summary", :summary)

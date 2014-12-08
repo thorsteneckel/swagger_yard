@@ -1,8 +1,17 @@
 module SwaggerYard
+
   class Operation
-    attr_accessor :summary, :notes
-    attr_reader :path, :http_method, :response_message, :response_type
-    attr_reader :parameters, :model_names
+
+    attr_accessor :summary,
+                  :notes,
+                  :receive_content_types,
+                  :response_content_types,
+                  :parameters
+    attr_reader   :path,
+                  :http_method,
+                  :response_message,
+                  :response_type,
+                  :model_names
 
     PARAMETER_LIST_REGEX = /\A\[(\w*)\]\s*(\w*)(\(required\))?\s*(.*)\n([.\s\S]*)\Z/
 
@@ -11,20 +20,40 @@ module SwaggerYard
       new(api).tap do |operation|
         yard_object.tags.each do |tag|
           case tag.tag_name
+          when "notes"
+            operation.notes = tag.text.gsub("\n", "<br\>")
           when "path"
             operation.add_path_params_and_method(tag)
           when "parameter"
             operation.add_parameter(tag)
           when "parameter_list"
             operation.add_parameter_list(tag)
-          when "response_type"
-            operation.add_response_type(Type.from_type_list(tag.types))
+          when "receive_content_type"
+            operation.receive_content_types.add(tag.text)
+          when "response_content_type"
+            operation.response_content_types.add(tag.text)
+
+            operation.parameters.map! { |p|
+
+              if p.name == "format_type"
+
+                # converts a Set like ['application/json', 'application/xml', 'whatsoever']
+                # into a Set like ['json', 'xml']
+                p.allowable_values = Set.new operation.response_content_types.map { |c|
+                                      c.gsub(/^[^\/]+\/?/, '')
+                                    }.reject { |c|
+                                      c.empty?
+                                    }
+              end
+
+              p
+            }
           when "response_message"
             operation.add_response_message(tag)
+          when "response_type"
+            operation.add_response_type(Type.from_type_list(tag.types))
           when "summary"
             operation.summary = tag.text
-          when "notes"
-            operation.notes = tag.text.gsub("\n", "<br\>")
           end
         end
 
@@ -33,10 +62,12 @@ module SwaggerYard
     end
 
     def initialize(api)
-      @api = api
-      @parameters = []
-      @model_names = []
-      @response_message = []
+      @api                    = api
+      @parameters             = []
+      @model_names            = []
+      @response_message       = []
+      @receive_content_types  = Set.new []
+      @response_content_types = Set.new []
     end
 
     def nickname
@@ -45,30 +76,41 @@ module SwaggerYard
 
     def to_h
       {
-        "httpMethod"        => http_method,
-        "nickname"          => nickname,
-        "type"              => "void",
-        "produces"          => ["application/json", "application/xml"],
-        "parameters"        => parameters.map(&:to_h),
-        "summary"           => summary || @api.description,
-        "notes"             => notes,
-        "responseMessages"  => response_message
-      }.tap do |h|
+        "httpMethod"       => http_method,
+        "nickname"         => nickname,
+        "type"             => "void",
+        "parameters"       => parameters.map(&:to_h),
+        "summary"          => summary || @api.description,
+        "notes"            => notes,
+        "responseMessages" => response_message
+      }.tap { |h|
+
         h.merge!(response_type.to_h) if response_type
-      end
+
+        h["consumes"] = SwaggerYard.config.receive_content_types
+        if not receive_content_types.empty?
+          h["consumes"] = receive_content_types.to_a
+        end
+
+        h["produces"] = SwaggerYard.config.response_content_types
+        if not response_content_types.empty?
+          h["produces"] = response_content_types.to_a
+        end
+      }.reject {|_,v| v.nil?}
     end
 
     ##
     # Example: [GET] /api/v2/ownerships.{format_type}
     # Example: [PUT] /api/v1/accounts/{account_id}.{format_type}
     def add_path_params_and_method(tag)
-      @path = tag.text
+
+      @path        = tag.text
       @http_method = tag.types.first
 
       parse_path_params(tag.text).each do |name|
 
         if name == 'format_type'
-          append_format_parameter
+          @parameters << format_parameter
         else
           @parameters << Parameter.from_path_param(name)
         end
@@ -122,9 +164,9 @@ module SwaggerYard
       allowable_values = parse_list_values(list_string)
 
       @parameters << Parameter.new(name, Type.new(data_type.downcase), description, {
-        required: required.present?,
-        param_type: "query",
-        allow_multiple: false,
+        required:         required.present?,
+        param_type:       "query",
+        allow_multiple:   false,
         allowable_values: allowable_values
       })
     end
@@ -136,18 +178,14 @@ module SwaggerYard
 
     def add_response_message(tag)
       @response_message << {
-        "code" => Integer(tag.name),
-        "message" => tag.text,
+        "code"          => Integer(tag.name),
+        "message"       => tag.text,
         "responseModel" => Array.wrap(tag.types).first
       }.reject {|_,v| v.nil?}
     end
 
     def sort_parameters
       @parameters.sort_by! {|p| p.name}
-    end
-
-    def append_format_parameter
-      @parameters << format_parameter
     end
 
     def ref?(data_type)
@@ -168,11 +206,20 @@ module SwaggerYard
     end
 
     def format_parameter
+
+      # converts a response_content_types config like ['application/json', 'application/xml', 'whatsoever']
+      # into a Set like ['json', 'xml']
+      allowable_values = Set.new SwaggerYard.config.response_content_types.map { |c|
+                            c.gsub(/^[^\/]+\/?/, '')
+                          }.reject { |c|
+                            c.empty?
+                          }
+
       Parameter.new("format_type", Type.new("string"), "Response format either JSON or XML", {
-        required: true,
-        param_type: "path",
-        allow_multiple: false,
-        allowable_values: ["json", "xml"]
+        required:         true,
+        param_type:       "path",
+        allow_multiple:   false,
+        allowable_values: allowable_values
       })
     end
   end

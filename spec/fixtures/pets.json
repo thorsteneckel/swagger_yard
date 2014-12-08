@@ -10,7 +10,6 @@
             "httpMethod": "GET",
             "nickname": "pets-format-type-get",
             "type": "array",
-            "produces": ["application/json", "application/xml"],
             "parameters": [{
                 "paramType": "query",
                 "name": "client_name",
@@ -24,15 +23,16 @@
                 "description": "Response format either JSON or XML",
                 "required": true,
                 "allowMultiple": false,
-                "enum": ["json", "xml"],
+                "enum": ["json"],
                 "type": "string"
             }],
             "summary": "return a list of Pets",
-            "notes": null,
             "responseMessages": [],
             "items": {
                 "$ref": "Pet"
-            }
+            },
+            "consumes": ["application/json"],
+            "produces": ["application/json"]
         }]
     }, {
         "path": "/pets/{id}.{format_type}",
@@ -41,7 +41,6 @@
             "httpMethod": "GET",
             "nickname": "pets-id-format-type-get",
             "type": "void",
-            "produces": ["application/json", "application/xml"],
             "parameters": [{
                 "paramType": "query",
                 "name": "added",
@@ -108,7 +107,6 @@
                 "format": "double"
             }],
             "summary": "return a Pet",
-            "notes": null,
             "responseMessages": [{
                 "code": 404,
                 "message": "Pet not found",
@@ -117,7 +115,9 @@
                 "code": 400,
                 "message": "Invalid ID supplied"
             }],
-            "$ref": "Pet"
+            "$ref": "Pet",
+            "consumes": ["application/json", "application/xml"],
+            "produces": ["application/xml", "application/json"]
         }]
     }, {
         "path": "/pets",
@@ -126,7 +126,6 @@
             "httpMethod": "POST",
             "nickname": "petspost",
             "type": "void",
-            "produces": ["application/json", "application/xml"],
             "parameters": [{
                 "paramType": "body",
                 "name": "pet",
@@ -137,7 +136,9 @@
             }],
             "summary": "create a Pet (overwritten)",
             "notes": "First line of the note.\u003cbr\u003eSecond line of the note.",
-            "responseMessages": []
+            "responseMessages": [],
+            "consumes": ["application/json", "application/xml"],
+            "produces": ["application/json", "application/xml"]
         }]
     }],
     "models": {

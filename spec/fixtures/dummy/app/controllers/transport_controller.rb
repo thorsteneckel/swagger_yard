@@ -13,6 +13,8 @@ class TransportsController < ApplicationController
   #                 [List]      begin_at
   #                 [List]      end_at
   #                 [List]      created_at
+  # @receive_content_type application/xml
+  # @response_content_type application/xml
   # @response_type [Array<Transport>]
   def index
   end

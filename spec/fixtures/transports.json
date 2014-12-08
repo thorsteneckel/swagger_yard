@@ -10,14 +10,13 @@
             "httpMethod": "GET",
             "nickname": "transports-format-type-get",
             "type": "array",
-            "produces": ["application/json", "application/xml"],
             "parameters": [{
                 "paramType": "path",
                 "name": "format_type",
                 "description": "Response format either JSON or XML",
                 "required": true,
                 "allowMultiple": false,
-                "enum": ["json", "xml"],
+                "enum": ["xml"],
                 "type": "string"
             }, {
                 "paramType": "query",
@@ -25,15 +24,16 @@
                 "description": "Orders response by fields. (e.g. sort_order=created_at).",
                 "required": false,
                 "allowMultiple": false,
-                "enum": ["id", "begin_at", "end_at", "created_at"],
+                "enum": ["begin_at", "created_at", "end_at", "id"],
                 "type": "string"
             }],
             "summary": "return a list of Transports",
-            "notes": null,
             "responseMessages": [],
             "items": {
                 "$ref": "Transport"
-            }
+            },
+            "consumes": ["application/xml"],
+            "produces": ["application/xml"]
         }]
     }],
     "models": {
