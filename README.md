@@ -185,10 +185,6 @@ See [rails engines overriding views](http://guides.rubyonrails.org/engines.html#
 
 Copying over JS requires that ActionDispatch::Static middleware be used (by default it should in use).
 
-## Notes ##
-
-By default SwaggerYard will use a slightly modify version of the swagger-ui. Changes to the JS code are indicated with "SwaggerYard changes" comments. The changes are mainly to support Rails way of supporting an array of parameters.
-
 ## More Information ##
 
 * [Swagger-ui](https://github.com/wordnik/swagger-ui)
