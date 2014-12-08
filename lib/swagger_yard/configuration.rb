@@ -21,7 +21,7 @@ module SwaggerYard
 
 
     def initialize
-      self.swagger_version          = "1.1"
+      self.swagger_version          = "1.2"
       self.api_version              = "0.1"
       self.enable                   = false
       self.reload                   = true
