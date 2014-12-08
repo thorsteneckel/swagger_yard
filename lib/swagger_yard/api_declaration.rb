@@ -75,7 +75,7 @@ module SwaggerYard
         "resourcePath"   => resource_path,
         "apis"           => apis.values.map(&:to_h),
         "models"         => Hash[models.map {|m| [m.id, m.to_h]}],
-        "authorizations"  => authorizations
+        "authorizations" => authorizations
       }
     end
 
