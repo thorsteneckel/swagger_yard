@@ -4,9 +4,9 @@ module SwaggerYard
     attr_accessor :authorizations
 
     def initialize(controller_path, model_path)
-      @model_path      = model_path
-      @controller_path = controller_path
 
+      @model_path            = model_path
+      @controller_path       = controller_path
       @resource_to_file_path = {}
       @authorizations        = []
     end
